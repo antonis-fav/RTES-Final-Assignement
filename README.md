@@ -9,3 +9,5 @@ You can find the source code of that client and extensive documentation regardin
 
 That source code was modified in order to implement the basic ideas and mechanisms of this source code here: 
 https://github.com/antonis-fav/Emdedded-Systems-Assignment-1. 
+
+You can find the slightly upadated version of the client.c inside the branch of this repository. In this updated version we remove any compiler warnings regarding typecasts and we are monitoring more than 4 stocks. 
