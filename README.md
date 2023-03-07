@@ -4,7 +4,7 @@ Aristotle University 2022
 
 This is the final assignement for the course "Real time embedded systems". 
 
-The final code inside the client.c is based on a client that connects to finnhub while using libwebsockets and created by a fellow colleague.
+The final code inside the client.c is based on a client that connects to finnhub while using libwebsockets and was created by a fellow colleague.
 You can find the source code of that client and extensive documentation regarding the installation of libwebsockets here https://github.com/GohanDGeo/lws-finnhub-client.
 
 That source code was modified in order to implement the basic ideas and mechanisms of this source code here: 
