@@ -775,7 +775,7 @@ void* candlestickfunc(){
             }
         }
         minute++;
-        // reseting the minute couter when it reaches 15
+        // reseting the counter minute when it reaches 15
         if(minute == 15){
             minute = 0;
         }
