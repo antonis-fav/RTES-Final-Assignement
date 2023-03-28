@@ -1,4 +1,4 @@
-// The following code is based on a client that connects to finnhub while using libwebsockets and was created by a fellow colleague.
+// The following code is based on a client that connects to finnhub while using libwebsockets and it was created by a fellow colleague.
 // You can find the source code of that client and extensive documentation here https://github.com/GohanDGeo/lws-finnhub-client.
 // That source code was modified in order to implement the basic ideas and "mechanisms" of this source code here: 
 // https://github.com/antonis-fav/Emdedded-Systems-Assignment-1. 
