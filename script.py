@@ -81,6 +81,7 @@ input = ["./2_wres_1_threads/BINANCE:BTCUSDT/BINANCE:BTCUSDT_timestraps.txt",
 
 
 n_threads = []
+i = 0
 for j in range (0, 4, 1):
     
     try:
@@ -126,9 +127,9 @@ input = ["./2_wres_1_threads/BINANCE:BTCUSDT/BINANCE:BTCUSDT_timestraps.txt",
          "./2_wres_16_threads/BINANCE:BTCUSDT/BINANCE:BTCUSDT_timestraps.txt"]
 
 
-
 n_threads = []
 mean_all = []
+i = 0 
 for j in range (0, 4, 1):
     
     try:
@@ -198,6 +199,7 @@ input = ["./8_wres_8_threads/BINANCE:BTCUSDT/BINANCE:BTCUSDT_timestraps.txt",
          "./8_wres_8_threads/IC MARKETS:1/IC MARKETS:1_timestraps.txt"]
 found_stocks = []
 k = []
+i = 0 
 for j in range (0, 4, 1):
     
     try:
@@ -240,6 +242,7 @@ input = ["./8_wres_2_threads/BINANCE:BTCUSDT/BINANCE:BTCUSDT_timestraps.txt",
          "./8_wres_2_threads/IC MARKETS:1/IC MARKETS:1_timestraps.txt"]
 found_stocks = []
 k = []
+i = 0
 for j in range (0, 4, 1):
     
     try:
