@@ -18,15 +18,11 @@ k = []
 input = ["./24_wres_8_threads/BINANCE:BTCUSDT/BINANCE:BTCUSDT_timestraps.txt",
          "./24_wres_8_threads/AMZN/AMZN_timestraps.txt",
          "./24_wres_8_threads/APPL/APPL_timestraps.txt",
-         "./24_wres_8_threads/IC MARKETS:1/IC MARKETS:1_timestraps.txt",
-         "./2_wres_1_threads/MSFT/MSFT_timestraps.txt",
-         "./2_wres_1_threads/BYND/BYND_timestraps.txt",
-         "./2_wres_1_threads/EXCOF/EXCOF_timestraps.txt",
-         "./2_wres_1_threads/UPOW/UPOW_timestraps.txt"]
+         "./24_wres_8_threads/IC MARKETS:1/IC MARKETS:1_timestraps.txt"]
 
 found_stocks=[]
 
-for j in range (0, 8, 1):
+for j in range (0, 4, 1):
     
     try:
         
@@ -39,14 +35,6 @@ for j in range (0, 8, 1):
                 found_stocks.append('APPL')
             elif(j == 3):
                 found_stocks.append('IC MARKETS:1')
-            elif(j == 4):
-                found_stocks.append('MSFT')
-            elif(j == 5):
-                found_stocks.append('BYND')
-            elif(j == 6):
-                found_stocks.append('EXCOF')
-            elif(j == 7):
-                found_stocks.append('UPOW')
             
             a=[]
             i=0
@@ -79,7 +67,6 @@ input = ["./2_wres_1_threads/BINANCE:BTCUSDT/BINANCE:BTCUSDT_timestraps.txt",
 
 
 n_threads = []
-i = 0
 for j in range (0, 4, 1):
     
     try:
@@ -95,7 +82,6 @@ for j in range (0, 4, 1):
                 n_threads = '16 Threads'
 
             a=[]
-            i=0
             for line in file:
                 chunks = line.split(',')
                 a.append((int(chunks[1])-int(chunks[0]))/1000)
@@ -128,7 +114,6 @@ input = ["./2_wres_1_threads/BINANCE:BTCUSDT/BINANCE:BTCUSDT_timestraps.txt",
 
 n_threads = []
 mean_all = []
-i = 0 
 for j in range (0, 4, 1):
     
     try:
@@ -165,9 +150,6 @@ plt.ylabel('Mean Delay (seconds)')
 plt.xlabel('Number of threads')
 # plt.legend()
 plt.show()
-
-
-
 
 input = ["./8_wres_8_threads/BINANCE:BTCUSDT/BINANCE:BTCUSDT_timestraps.txt",
          "./8_wres_8_threads/AMZN/AMZN_timestraps.txt",
