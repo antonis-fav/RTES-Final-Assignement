@@ -50,7 +50,7 @@ x_axis = ['A', 'B', 'C']
 # plt.grid()
 plt.plot(x_axis,k, marker = 's')
 plt.title('24 Hours-Data - 8 Threads')
-plt.ylabel('Median Delay (seconds)')
+plt.ylabel('Mean Delay (seconds)')
 plt.xlabel('Different Stocks')
 plt.legend()
 plt.show()
@@ -188,7 +188,7 @@ print(k)
 plt.plot(k, marker = 's', label = '8 Threads')
 
 plt.title('8 Hours-Data')
-plt.ylabel('Median Delay (seconds)')
+plt.ylabel('Mean Delay (seconds)')
 plt.xlabel('Stocks')
 plt.legend()
 
@@ -232,7 +232,7 @@ x_axis=['A', 'B', 'C']
 plt.plot(x_axis, k, marker ='o', label = '2 Threads')
 
 plt.title('8 Hours-Data')
-plt.ylabel('Median Delay (seconds)')
+plt.ylabel('Mean Delay (seconds)')
 plt.xlabel('Different Stocks')
 plt.legend()
 plt.show()
