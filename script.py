@@ -12,9 +12,6 @@ def Average(a):
 
 data_points = 10
 
-
-
-
 i = 0
 j = 0 
 k = []
@@ -52,6 +49,7 @@ for j in range (0, 8, 1):
                 found_stocks.append('UPOW')
             
             a=[]
+            i=0
             for line in file:
                 chunks = line.split(',')
                 a.append((int(chunks[1])-int(chunks[0]))/1000)
@@ -97,6 +95,7 @@ for j in range (0, 4, 1):
                 n_threads = '16 Threads'
 
             a=[]
+            i=0
             for line in file:
                 chunks = line.split(',')
                 a.append((int(chunks[1])-int(chunks[0]))/1000)
@@ -115,7 +114,7 @@ for j in range (0, 4, 1):
 
 plt.grid()
 plt.title('2 Hours-Data')
-plt.ylabel('Median Delay (seconds)')
+plt.ylabel('Mean Delay (seconds)')
 plt.xlabel('Hours Data / Data points ')
 plt.legend()
 plt.show()
@@ -145,6 +144,7 @@ for j in range (0, 4, 1):
                 n_threads = '16 Threads'
 
             a=[]
+            i=0
             for line in file:
                 chunks = line.split(',')
                 a.append((int(chunks[1])-int(chunks[0]))/1000)
@@ -160,35 +160,11 @@ x_axis = [1, 2, 8, 16]
 plt.plot(x_axis, mean_all, marker = 'd')
 plt.grid()
 plt.title('2 Hours-Data')
-plt.ylabel('Median Delay (seconds)')
+plt.ylabel('Mean Delay (seconds)')
 
 plt.xlabel('Number of threads')
 # plt.legend()
 plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -199,7 +175,6 @@ input = ["./8_wres_8_threads/BINANCE:BTCUSDT/BINANCE:BTCUSDT_timestraps.txt",
          "./8_wres_8_threads/IC MARKETS:1/IC MARKETS:1_timestraps.txt"]
 found_stocks = []
 k = []
-i = 0 
 for j in range (0, 4, 1):
     
     try:
@@ -215,6 +190,7 @@ for j in range (0, 4, 1):
                 found_stocks.append('IC MARKETS:1')
 
             a=[]
+            i=0
             for line in file:
                 chunks = line.split(',')
                 a.append((int(chunks[1])-int(chunks[0]))/1000)
@@ -242,7 +218,6 @@ input = ["./8_wres_2_threads/BINANCE:BTCUSDT/BINANCE:BTCUSDT_timestraps.txt",
          "./8_wres_2_threads/IC MARKETS:1/IC MARKETS:1_timestraps.txt"]
 found_stocks = []
 k = []
-i = 0
 for j in range (0, 4, 1):
     
     try:
@@ -258,6 +233,7 @@ for j in range (0, 4, 1):
                 found_stocks.append('IC MARKETS:1')
 
             a=[]
+            i=0
             for line in file:
                 chunks = line.split(',')
                 a.append((int(chunks[1])-int(chunks[0]))/1000)
