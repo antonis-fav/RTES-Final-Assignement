@@ -377,7 +377,7 @@ int main(void)
     info.options = LWS_SERVER_OPTION_DO_SSL_GLOBAL_INIT;
 
     // Set the Finnhub url
-    char *api_key = "ca4a5haad3if57m3g8u0"; // PLACE YOUR API KEY HERE!
+    char *api_key = "YOUR_API_KEY"; // PLACE YOUR API KEY HERE!
     if (strlen(api_key) == 0)
     {
         printf(" API KEY NOT PROVIDED!\n");
