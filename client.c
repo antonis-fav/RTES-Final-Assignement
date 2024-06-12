@@ -3,6 +3,11 @@
 // That source code was modified in order to implement the basic ideas and "mechanisms" of this source code here: 
 // https://github.com/antonis-fav/Emdedded-Systems-Assignment-1. 
 
+//** Vesrion 1.2**//
+
+//Removing any compiler warnings regarding typecast around void pointers
+//Monitoring more than 4 stocks, such as MSFT, BYND, EXCOF, UPOW
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,6 +36,10 @@ pthread_mutex_t mutex_APPL;
 pthread_mutex_t mutex_AMZN;
 pthread_mutex_t mutex_BINANCE_BTCUSDT;
 pthread_mutex_t mutex_IC_MARKETS_1;
+pthread_mutex_t mutex_MSFT;
+pthread_mutex_t mutex_BYND;
+pthread_mutex_t mutex_UPOW;
+pthread_mutex_t mutex_EXCOF;
 
 
 
@@ -58,7 +67,7 @@ int after_15 = 0;
 #define RESET "\033[0m"
 
 //Declare the names of the stock market that you want to monitor
-char *symbols[] = {"APPL\0", "AMZN\0", "BINANCE:BTCUSDT\0", "IC MARKETS:1\0"};
+char *symbols[] = {"APPL\0", "AMZN\0", "BINANCE:BTCUSDT\0", "IC MARKETS:1\0", "MSFT\0", "BYND\0", "UPOW\0", "EXCOF\0"};
 
 typedef struct{
     void*(*work)(void*);
@@ -97,7 +106,7 @@ void queueDelete (queue *q);
 void queueAdd (queue *q, workFunction pi);
 void queueDel (queue *q, workFunction *out);
 void* consumer();
-void* routine(int args);
+void* routine(void* args);
 void* candlestickfunc();
 
 
@@ -121,6 +130,10 @@ void intHandler(int dummy)
     pthread_mutex_destroy(&mutex_APPL);
     pthread_mutex_destroy(&mutex_BINANCE_BTCUSDT);
     pthread_mutex_destroy(&mutex_IC_MARKETS_1);
+    pthread_mutex_destroy(&mutex_MSFT);
+    pthread_mutex_destroy(&mutex_BYND);
+    pthread_mutex_destroy(&mutex_UPOW);
+    pthread_mutex_destroy(&mutex_EXCOF);
     keepRunning = 0;
 }
 
@@ -157,15 +170,17 @@ cb(struct lejp_ctx *ctx, char reason)
             counter = 0;
             
             pthread_mutex_lock (fifo->mut);
-            //printf("\ncheck 3\n");
             while (fifo->full) {
                 printf ("queue FULL.\n");
                 pthread_cond_wait (fifo->notFull, fifo->mut);
             }
             workFunction pi;
 
-            pi.work = routine; // here the routine function is about writing the transaction's data into a file
-            pi.arg = buf_index;
+            pi.work = routine; 
+            // Using temporary integer variable that will hold the value of buf_index, because this value needs to be passed through address memory space indexing (void pointer)
+            int temp_int = buf_index;
+            //Passing as argument the address of the temp_int variable  
+            pi.arg = (void*)&temp_int;
             queueAdd (fifo, pi);
             pthread_mutex_unlock (fifo->mut);
             pthread_cond_signal (fifo->notEmpty);
@@ -293,9 +308,9 @@ static int ws_service_callback(
 
         if (!writeable_flag)
         {
-            char symb_arr[4][100] = {"APPL\0", "AMZN\0", "BINANCE:BTCUSDT\0", "IC MARKETS:1\0"};
+            char symb_arr[8][100] = {"APPL\0", "AMZN\0", "BINANCE:BTCUSDT\0", "IC MARKETS:1\0, MSFT\0", "BYND\0", "UPOW\0", "EXCOF\0"};
             char str[50];
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 8; i++)
             {
                 sprintf(str, "{\"type\":\"subscribe\",\"symbol\":\"%s\"}", symb_arr[i]);
                 int len = strlen(str);
@@ -344,11 +359,15 @@ int main(void)
     pthread_mutex_init(&mutex_APPL, NULL);
     pthread_mutex_init(&mutex_BINANCE_BTCUSDT, NULL);
     pthread_mutex_init(&mutex_IC_MARKETS_1, NULL);
+    pthread_mutex_init(&mutex_MSFT, NULL);
+    pthread_mutex_init(&mutex_BYND, NULL);
+    pthread_mutex_init(&mutex_EXCOF, NULL);
+    pthread_mutex_init(&mutex_UPOW, NULL);
 
     
     struct stat sb;
     int i = 0;
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < 8; i++)
     {
         if (!(stat(symbols[i], &sb) == 0 && S_ISDIR(sb.st_mode)))
         {
@@ -536,10 +555,12 @@ void *consumer (){
     workFunction out;
     queueDel (fifo, &out);
 
+
+
+    int p = *(int*)out.arg;
+    printf("p is :%d\n", p);
     pthread_mutex_unlock (fifo->mut);
     pthread_cond_signal (fifo->notFull);
-
-    int p = out.arg;
 
     if(strcmp (transactions[p].s, symbols[0]) ==0){
         pthread_mutex_lock(&mutex_APPL);
@@ -561,15 +582,36 @@ void *consumer (){
         out.work(out.arg);
         pthread_mutex_unlock(&mutex_IC_MARKETS_1);
     }
+            if(strcmp (transactions[p].s, symbols[4]) ==0){
+        pthread_mutex_lock(&mutex_MSFT);
+        out.work(out.arg);
+        pthread_mutex_unlock(&mutex_MSFT);
+    }
+    if(strcmp (transactions[p].s, symbols[5]) ==0){
+        pthread_mutex_lock(&mutex_BYND);
+        out.work(out.arg);
+        pthread_mutex_unlock(&mutex_BYND);
+    }
+    if(strcmp (transactions[p].s, symbols[6]) ==0){
+        pthread_mutex_lock(&mutex_UPOW);
+        out.work(out.arg);
+        pthread_mutex_unlock(&mutex_UPOW);
+    }
+    if(strcmp (transactions[p].s, symbols[7]) ==0){
+        pthread_mutex_lock(&mutex_EXCOF);
+        out.work(out.arg);
+        pthread_mutex_unlock(&mutex_EXCOF);
+    }
   }
   return(NULL);
 }
 
 
 
-void* routine(int args){
+void* routine(void* args){
 
-    int r_c = args;
+    int r_c = *(int*)args;
+    
     printf("r_c = %d\n", r_c);
 
     transaction_data td = transactions[r_c];
@@ -613,14 +655,14 @@ void* routine(int args){
 }
 
 void* candlestickfunc(){
-    // We monitor 4 stocks
+    // We monitor 8 stocks
     // We produce the average candlestick of the last 15 minutes
-    // The candlestick of each stock is computated every 1 minute, so we need a candlestick type array, size [4][15]
-    candlestick candlestick_arr[15][4]; 
+    // The candlestick of each stock is computated every 1 minute, so we need a candlestick type array, size [15][8]
+    candlestick candlestick_arr[15][8]; 
 
     unsigned long int candle_counter = 0; 
     transaction_data temp; 
-    transaction_data final_data[4];
+    transaction_data final_data[8];
     int minute =0;  
     int j=0;
     int i=0;
@@ -628,7 +670,7 @@ void* candlestickfunc(){
     float total_vol_15m = 0;
     while(1){
         
-        for(j=0; j<4; j++){
+        for(j=0; j<8; j++){
         candlestick_arr[minute][j].init_p = 0;
         candlestick_arr[minute][j].final_p = 0;
         candlestick_arr[minute][j].max_p = 0;
@@ -654,7 +696,7 @@ void* candlestickfunc(){
                 temp = transactions[candle_counter];
 
                 if(milliseconds_candle - transactions[candle_counter].ts < 60000){
-                    for(j=0; j<4; j++){
+                    for(j=0; j<8; j++){
 
                         if(strcmp(temp.s, symbols[j]) == 0){ 
                             if(candlestick_arr[minute][j].init_p == 0){
@@ -684,7 +726,7 @@ void* candlestickfunc(){
 
                 temp = transactions[candle_counter];
                 if(milliseconds_candle - transactions[candle_counter].ts < 60000){
-                    for(j=0; j<4; j++){
+                    for(j=0; j<8; j++){
 
                         if(strcmp(temp.s, symbols[j]) == 0){ 
                             if(candlestick_arr[minute][j].init_p == 0){
@@ -712,7 +754,7 @@ void* candlestickfunc(){
             }
         }
         
-        for(j=0; j<4; j++){
+        for(j=0; j<8; j++){
             candlestick_arr[minute][j].final_p = final_data[j].p;
             if(candlestick_arr[minute][j].transactions_number != 0){
                 candlestick_arr[minute][j].transaction_avg_price = candlestick_arr[minute][j].transaction_avg_price / candlestick_arr[minute][j].transactions_number;
@@ -743,7 +785,7 @@ void* candlestickfunc(){
         }
         if(after_15 == 1){
 
-            for(j=0; j<4; j++){
+            for(j=0; j<8; j++){
                 char candle_avg[50]="";
                 strcat(candle_avg, symbols[j]);
                 strcat(candle_avg, backslash);
